@@ -4,6 +4,7 @@ import tensorflow as tf
 import numpy as np
 from sklearn.datasets import load_boston
 
+
 # Function to load the Boston data set
 
 def read_infile():
@@ -12,13 +13,15 @@ def read_infile():
     target = np.array(data.target)
     return features, target
 
+
 # Normalize the features by Z scaling; i.e., subtract from each feature value its mean and
 # then divide by its #standard deviation
 
 def feature_normalize(data):
     mu = np.mean(data, axis=0)
     std = np.std(data, axis=0)
-    return (data-mu)/std
+    return (data - mu) / std
+
 
 # Append the feature for the bias term.
 
@@ -27,9 +30,10 @@ def append_bias(features, target):
     n_features = features.shape[1]
     intercept_feature = np.ones((n_samples, 1))
     X = np.concatenate((features, intercept_feature), axis=1)
-    X = np.reshape(X, [n_samples, n_features+1])
+    X = np.reshape(X, [n_samples, n_features + 1])
     Y = np.reshape(target, [n_samples, 1])
     return X, Y
+
 
 # Execute the functions to read, normalize, and add append bias term to the data
 features, target = read_infile()
@@ -55,9 +59,23 @@ train_op = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 with tf.Session() as sess:
     sess.run(init)
     for i in range(num_epochs):
-        sess.run(train_op, feed_dict={X:X_input, Y:Y_input})
-        cost_trace.append(sess.run(cost, feed_dict={X:X_input, Y:Y_input}))
-    error_ = sess.run(error, {X:X_input, Y:Y_input})
-    pred_ = sess.run(pred, {X:X_input})
+        sess.run(train_op, feed_dict={X: X_input, Y: Y_input})
+        cost_trace.append(sess.run(cost, feed_dict={X: X_input, Y: Y_input}))
+    error_ = sess.run(error, {X: X_input, Y: Y_input})
+    pred_ = sess.run(pred, {X: X_input})
 
 print('MSE in training:', cost_trace[-1])
+
+# Plot the reduction in cost over iterations or epochs
+
+import matplotlib.pyplot as plt
+
+# matplotlib inline
+plt.plot(cost_trace)
+#-------------------------------------------------------------------------------------------
+# Plot the Predicted House Prices vs the Actual House Prices
+#-------------------------------------------------------------------------------------------
+fig, ax = plt.subplots()
+plt.scatter(Y_input,pred_)
+ax.set_xlabel('Actual House price')
+ax.set_ylabel('Predicted House price')
