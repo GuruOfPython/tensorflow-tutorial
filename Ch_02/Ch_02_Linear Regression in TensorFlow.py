@@ -72,10 +72,10 @@ import matplotlib.pyplot as plt
 
 # matplotlib inline
 plt.plot(cost_trace)
-#-------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
 # Plot the Predicted House Prices vs the Actual House Prices
-#-------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
 fig, ax = plt.subplots()
-plt.scatter(Y_input,pred_)
+plt.scatter(Y_input, pred_)
 ax.set_xlabel('Actual House price')
 ax.set_ylabel('Predicted House price')
